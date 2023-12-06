@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+
+@model Departman
+
+<form method="post" >
+
+    <div class="row">
+
+        <div class="col-10">
+
+            <div class="border p-3 mt-5">
+
+                <div class="row pb-3">
+
+                    <h2 class="text-primary">@(Model == null ? "Departman Ekle" : "Departman Güncelle")</h2>
+                </div>
+
+
+                <style>
+                    html, body {
+                        overflow-y: auto; /* or overflow: auto; */
+                    }
+                </style>
+
+                <div class="mb-3">
+                    <label asp-for="Ad" class="p-0"></label>
+                    <input asp-for="Ad" class="form-control" />
+                    <span asp-validation-for="Ad" class="text-danger"></span>
+
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="BirimId" class="p-0"></label>
+                    <select asp-for="BirimId" asp-items="ViewBag.BirimList" class="form-select"></select>
+
+                </div>
+
+                @if (Model != null)
+                {
+                    <button type="submit" class="btn btn-lg btn-primary" style="width:250px">Guncelle</button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-lg btn-primary" style="width:250px">Ekle</button>
+                }
+
+
+                <a asp-controller="Departman" asp-action="Index" class="btn btn-lg btn-primary" style="width:250px">
+                 Geri Dön
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+</html>

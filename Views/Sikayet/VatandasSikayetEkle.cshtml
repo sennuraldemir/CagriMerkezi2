@@ -1,0 +1,143 @@
+﻿
+<!DOCTYPE html>
+
+@model Sikayet
+
+<form method="post" enctype="multipart/form-data">
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <input asp-for="ResimUrl" hidden />
+
+    <style>
+        html, body {
+            overflow-y: auto; /* or overflow: auto; */
+        }
+    </style>
+
+    <div class="main-content">
+
+    <div class="row">
+
+        <div class="col-10">
+
+            <div class="border p-3 mt-5">
+
+                <div class="row pb-3">
+
+                    <h2 class="text-primary">@(Model == null ? "Sikayet Ekle" : "Sikayet Güncelle")</h2>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Ad" class="p-0"></label>
+                            <input asp-for="Ad" class="form-control" />
+                            <span asp-validation-for="Ad" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Soyad" class="p-0"></label>
+                            <input asp-for="Soyad" class="form-control" />
+                            <span asp-validation-for="Soyad" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TC" class="p-0"></label>
+                            <input asp-for="TC" class="form-control" />
+                            <span asp-validation-for="TC" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="TelNo" class="p-0"></label>
+                            <input asp-for="TelNo" class="form-control" />
+                            <span asp-validation-for="TelNo" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Adres" class="p-0"></label>
+                    <input asp-for="Adres" class="form-control" />
+                    <span asp-validation-for="Adres" class="text-danger"></span>
+
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Aciklama" class="p-0"></label>
+                    <input asp-for="Aciklama" class="form-control" />
+                    <span asp-validation-for="Aciklama" class="text-danger"></span>
+
+                </div>
+
+
+                <script>
+                    $(document).ready(function () {
+                        $("#BirimId").change(function () {
+                            var selectedBirimId = $(this).val();
+
+                            // AJAX isteği ile departmanları getir
+                            $.ajax({
+                                url: '/Sikayet/GetDepartmentsByBirimId',
+                                type: 'GET',
+                                data: { birimId: selectedBirimId },
+                                success: function (data) {
+                                    // Departmanları güncelle
+                                    $("#DepId").empty();
+                                    $("#DepId").append('<option value="">Seçiniz</option>');
+                                    $.each(data, function (i, item) {
+                                        $("#DepId").append('<option value="' + item.value + '">' + item.text + '</option>');
+                                    });
+                                },
+                                error: function () {
+                                    console.log('Departmanları getirme hatası');
+                                }
+                            });
+                        });
+                    });
+                </script>
+
+
+                <div class="mb-3">
+                    <label asp-for="ResimUrl" class="p-0"></label>
+                    <input type="file" name="file" class="form-control" />
+
+                </div>
+
+                    <button type="submit" class="btn btn-lg btn-primary" style="width:250px">Ekle</button>
+                
+
+
+                <a asp-controller="CagriMerkezi" asp-action="GelenSikayet" class="btn btn-lg btn-primary" style="width:250px">
+                    Geri Dön
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-2">
+
+            @if (Model != null)
+            {
+                <br />
+                <br />
+                <img src="@Model.ResimUrl" width="100%" style="border-radius:7px; border:1px solid #bbb9b9" />
+            }
+
+        </div>
+
+    </div>
+
+    </div>
+
+</form>
+
+</html>
+

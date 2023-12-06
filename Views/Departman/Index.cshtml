@@ -1,0 +1,112 @@
+﻿
+@model List<Departman>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+@if (TempData["basarili"] != null)
+{
+    <h2 style="color:red">@TempData["basarili"]</h2>
+}
+
+<div class="container">
+    <div class="row pt-3 pb-4">
+
+        <div> 
+
+            <h1>Departman</h1>
+
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label>Sorumlu Birim:</label>
+            <select id="selectedBirimId" class="form-select">
+                <option value="">Tümü</option>
+                @foreach (var birim in ViewBag.BrDepList as List<SelectListItem>)
+                {
+                    <option value="@birim.Value">@birim.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <button id="btnDepFilter" class="btn btn-primary">Filtrele</button>
+        </div>
+    </div>
+
+
+    <table class="table table-bordered">
+
+        <thead>
+    
+            <tr>
+                <th>
+                    Id
+                </th>
+
+                <th>
+                    Ad
+                </th>   
+
+                <th>
+                    BirimId
+                </th>  
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @foreach (var departman in Model){
+            <tr>
+                    <td>@departman.Id</td>
+                    <td>@departman.Ad</td>                    
+                    <td>@departman.Birim.Ad</td>
+                    
+                <td>
+                    <a asp-controller="Departman" asp-action="EkleGuncelle" asp-route-id="@departman.Id" type="button"  class="btn btn-success" style="width:250px">Güncelle</a>
+                </td>
+
+                    <td>
+                        <a asp-controller="Departman" asp-action="Sil" asp-route-id="@departman.Id" type="button" class="btn btn-danger" style="width:250px">Sil</a>
+                    </td>
+
+            </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <div class="row pt-3 pb-2">
+
+        <div>
+            <a asp-controller="Departman" asp-action="EkleGuncelle" class="btn btn-lg btn-primary" type="button">
+                Yeni Departman Oluştur
+            </a>
+ 
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#btnDepFilter").on("click", function () {
+                var selectedBirimId = $("#selectedBirimId").val();
+
+                $.ajax({
+                    url: "/Departman/GetFilteredDep",
+                    type: "GET",
+                    data: { birimId: selectedBirimId },
+                    success: function (result) {
+                        $(".table tbody").html(result);
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+
+</div>
